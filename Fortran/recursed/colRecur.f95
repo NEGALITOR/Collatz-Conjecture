@@ -2,11 +2,19 @@ program colLoop
     
     IMPLICIT NONE
 
+    ! --------------------------------------------------------------------------------------------
+    ! Struct colNum that contains 2 elements: number and sequence length
+    ! --------------------------------------------------------------------------------------------
     type colNum
         integer :: num
         integer :: seqLength
     END type
 
+    ! --------------------------------------------------------------------------------------------
+    ! Main()
+    ! Takes command line arguments and pares it as an unsigned Int64
+    ! Fills up array and prints
+    ! --------------------------------------------------------------------------------------------
     type(colNum), dimension(10) :: colArr
     type(colNum) :: colValue
     integer :: colArrSize, location
@@ -49,6 +57,13 @@ program colLoop
     CALL printNums(colArr, colArrSize, 1)
 
 CONTAINS
+
+    ! --------------------------------------------------------------------------------------------
+    ! Calculates the amount of numbers required to reach 1 in a collatz sequence
+    ! Until num is 1, check if even or off and return collatz accordingly
+    ! Utilizes recursion
+    ! Returns the count
+    ! --------------------------------------------------------------------------------------------
     RECURSIVE FUNCTION collatz(numVal, count) result(result)
 
         integer, intent (in) :: numVal
@@ -72,11 +87,12 @@ CONTAINS
             result = collatz((num*3)+1, count) 
         END if
 
-        
-        !result = count
-
     END function collatz
 
+    ! --------------------------------------------------------------------------------------------
+    ! Replaces any duplicates in the array according to if num is less than or equal to element
+    ! Returns true or false depending on if a duplicate was found
+    ! --------------------------------------------------------------------------------------------
     INTEGER FUNCTION replaceDuplicate(colArr, colValue, arrSize)
 
         type(colNum), dimension(10), intent (inout) :: colArr
@@ -85,7 +101,7 @@ CONTAINS
         integer :: i
 
         do i = 1, arrSize-1
-            !write(*,'(i0)') i
+
             if (colArr(i)%seqLength == colValue%seqLength) then
 
                 if (colValue%num <= colArr(i)%num) then 
@@ -94,14 +110,13 @@ CONTAINS
                 replaceDuplicate = 1
             END if
         END do
-        !replaceDuplicate = 0
+
     END function replaceDuplicate
 
-    !FUNCTION searchMin(colArr, arrSize) result(result)
-
-    !END function
-
-
+    ! --------------------------------------------------------------------------------------------
+    ! Searches the minimum value through the array of colNum struct
+    ! Return the minimum values location
+    ! --------------------------------------------------------------------------------------------
     INTEGER FUNCTION searchMin(colArr, arrSize)
     
     type(colNum), dimension(10), intent(in) :: colArr
@@ -124,11 +139,15 @@ CONTAINS
     END do
     searchMin = location
 
-  END FUNCTION
+    END FUNCTION
 
-  SUBROUTINE sort(colArr, arrSize, sortType)
-  
-  
+    ! --------------------------------------------------------------------------------------------
+    ! Sorts the array with Insertion Sort
+    ! Based on the sortType passed through, it sorts according to num or seqLength
+    ! Returns the sorted array
+    ! --------------------------------------------------------------------------------------------
+    SUBROUTINE sort(colArr, arrSize, sortType)
+
     type(colNum), dimension(10), intent(out) :: colArr
     type(colNum) :: maxim
     integer, intent(in) :: arrSize
@@ -165,10 +184,13 @@ CONTAINS
         END do
     END if
 
-  END SUBROUTINE
+    END SUBROUTINE
 
-  SUBROUTINE printNums(colArr, arrSize, sortType)
-  
+    ! --------------------------------------------------------------------------------------------
+    ! Calls sort function with a sortType and prints it out to cmdline
+    ! --------------------------------------------------------------------------------------------
+    SUBROUTINE printNums(colArr, arrSize, sortType)
+
     type(colNum), dimension(10), intent(inout) :: colArr
     integer, intent(in) :: arrSize
     integer, intent(in) :: sortType
@@ -176,12 +198,12 @@ CONTAINS
 
     CALL sort(colArr, arrSize, sortType)
     do i = 1, arrSize-1
-      if (colArr(i)%num /= 0) then
+        if (colArr(i)%num /= 0) then
         write(*,'(i0 , A, i0)') colArr(i)%num, " ", colArr(i)%seqLength
-      END if
+        END if
     END do
 
-  END SUBROUTINE printNums
+    END SUBROUTINE printNums
 
 
 

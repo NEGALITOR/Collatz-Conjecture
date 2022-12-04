@@ -1,12 +1,19 @@
 #!/usr2/local/julia-1.8.2/bin/julia
 
+
+# --------------------------------------------------------------------------------------------
+# Struct colNum that contains 2 elements: number and sequence length
+# --------------------------------------------------------------------------------------------
 mutable struct colNum
     num::Int64
     seqLength::Int64
 end
 
-
-
+# --------------------------------------------------------------------------------------------
+# Main()
+# Takes command line arguments and pares it as an unsigned Int64
+# Fills up array and prints
+# --------------------------------------------------------------------------------------------
 function main()
 
     colArr =  Array{colNum}(undef, 10)
@@ -36,7 +43,12 @@ function main()
 end
 
 
-
+# --------------------------------------------------------------------------------------------
+# Calculates the amount of numbers required to reach 1 in a collatz sequence
+# Until num is 1, check if even or off and set num accordingly
+# Utilizes loop
+# Returns the count
+# --------------------------------------------------------------------------------------------
 function collatz(num, count)
 
     while (num != 1)
@@ -50,6 +62,10 @@ function collatz(num, count)
     return count
 end
 
+# --------------------------------------------------------------------------------------------
+# Replaces any duplicates in the array according to if num is less than or equal to element
+# Returns true or false depending on if a duplicate was found
+# --------------------------------------------------------------------------------------------
 function replaceDuplicate(colArr, colValue, arrSize)
 
     for i in 1:(arrSize-1)
@@ -61,6 +77,10 @@ function replaceDuplicate(colArr, colValue, arrSize)
     return false;
 end
 
+# --------------------------------------------------------------------------------------------
+# Searches the minimum value through the array of colNum struct
+# Return the minimum values location
+# --------------------------------------------------------------------------------------------
 function searchMin(colArr, arrSize)
 
     minSt = colArr[1]
@@ -79,6 +99,11 @@ function searchMin(colArr, arrSize)
 
 end
 
+# --------------------------------------------------------------------------------------------
+# Sorts the array with Insertion Sort
+# Based on the sortType passed through, it sorts according to num or seqLength
+# Returns the sorted array
+# --------------------------------------------------------------------------------------------
 function sortArr(colArr, arrSize, sortType)
 
     if (sortType == 0)
@@ -117,7 +142,9 @@ function sortArr(colArr, arrSize, sortType)
     return colArr
 end
 
-
+# --------------------------------------------------------------------------------------------
+# Calls sort function with a sortType and prints it out to cmdline
+# --------------------------------------------------------------------------------------------
 function printNums(colArr, arrSize, sortType)
 
     colArr = sortArr(colArr, arrSize, sortType)

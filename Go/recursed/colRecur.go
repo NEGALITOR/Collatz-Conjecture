@@ -7,11 +7,19 @@ import (
 	"strconv"
 )
 
+/* --------------------------------------------------------------------------------------------
+* Struct colNum that contains 2 elements: number and sequence length
+* --------------------------------------------------------------------------------------------*/
 type colNum struct {
 	num int64
 	seqLength int64
 }
 
+/* --------------------------------------------------------------------------------------------
+* Main()
+* Takes command line arguments and pares it as an unsigned Int64
+* Fills up array and prints
+* --------------------------------------------------------------------------------------------*/
 func main() {
 	var colArr[10] colNum
 	var colArrSize int = 0
@@ -41,6 +49,12 @@ func main() {
 
 }
 
+/* --------------------------------------------------------------------------------------------
+* Calculates the amount of numbers required to reach 1 in a collatz sequence
+* Until num is 1, check if even or off and return collatz accordingly
+* Utilizes recursion
+* Returns the count
+* --------------------------------------------------------------------------------------------*/
 func collatz(num int64, count int64) int64 {
 
 	if (num == 1) { return count }
@@ -49,6 +63,10 @@ func collatz(num int64, count int64) int64 {
 	return collatz((num*3)+1, count)
 }
 
+/* --------------------------------------------------------------------------------------------
+* Replaces any duplicates in the array according to if num is less than or equal to element
+* Returns true or false depending on if a duplicate was found
+* --------------------------------------------------------------------------------------------*/
 func replaceDuplicate(colArr[10] colNum, colValue colNum, arrSize int) bool {
 	for i := 0; i < arrSize; i++ {
 		if colArr[i].seqLength == colValue.seqLength {
@@ -59,6 +77,11 @@ func replaceDuplicate(colArr[10] colNum, colValue colNum, arrSize int) bool {
 	return false
 }
 
+/* --------------------------------------------------------------------------------------------
+* Sorts the array with Insertion Sort
+* Based on the sortType passed through, it sorts according to num or seqLength
+* Returns the sorted array
+* --------------------------------------------------------------------------------------------*/
 func searchMin(colArr[10] colNum, arrSize int) int {
 
 	var minSt colNum = colArr[0]
@@ -74,55 +97,61 @@ func searchMin(colArr[10] colNum, arrSize int) int {
 	  }
 	}
 	return location
-  }
+}
   
-  //Insertion sort through norms from greatest to least
-  func sort(colArr[10] colNum, arrSize int, sortType int) [10]colNum {
+/* --------------------------------------------------------------------------------------------
+* Sorts the array with Insertion Sort
+* Based on the sortType passed through, it sorts according to num or seqLength
+* Returns the sorted array
+* --------------------------------------------------------------------------------------------*/
+func sort(colArr[10] colNum, arrSize int, sortType int) [10]colNum {
 
-	if sortType == 0 {
-		fmt.Println("Sorted based on sequence length")
-		var maxim colNum
-	
-		for i := 0; i < arrSize; i++ {
-		var indx int = i
-		
-		for j := i; j < arrSize; j++ {
-			if colArr[j].seqLength > colArr[indx].seqLength {
-			indx = j
-			}
-		}
-		maxim = colArr[indx]
-		colArr[indx] = colArr[i]
-		colArr[i] = maxim
-		}
-		return colArr
-	} else {
-		fmt.Println("Sorted based on sequence size")
-		var maxim colNum
-	
-		for i := 0; i < arrSize; i++ {
-		var indx int = i
-		
-		for j := i; j < arrSize; j++ {
-			if colArr[j].num > colArr[indx].num {
-			indx = j
-			}
-		}
-		maxim = colArr[indx]
-		colArr[indx] = colArr[i]
-		colArr[i] = maxim
-		}
-		return colArr
-	}
+if sortType == 0 {
+	fmt.Println("Sorted based on sequence length")
+	var maxim colNum
 
-  }
-  
-  //Prints Nums
-  func printNums(colArr[10] colNum, arrSize int, sortType int) {
-	colArr = sort(colArr, arrSize, sortType)
 	for i := 0; i < arrSize; i++ {
-	  if colArr[i].num != 0 {
-		fmt.Printf("%d %d\n", colArr[i].num, colArr[i].seqLength)
-	  }
+	var indx int = i
+	
+	for j := i; j < arrSize; j++ {
+		if colArr[j].seqLength > colArr[indx].seqLength {
+		indx = j
+		}
 	}
-  }
+	maxim = colArr[indx]
+	colArr[indx] = colArr[i]
+	colArr[i] = maxim
+	}
+	return colArr
+} else {
+	fmt.Println("Sorted based on sequence size")
+	var maxim colNum
+
+	for i := 0; i < arrSize; i++ {
+	var indx int = i
+	
+	for j := i; j < arrSize; j++ {
+		if colArr[j].num > colArr[indx].num {
+		indx = j
+		}
+	}
+	maxim = colArr[indx]
+	colArr[indx] = colArr[i]
+	colArr[i] = maxim
+	}
+	return colArr
+}
+
+}
+  
+/* --------------------------------------------------------------------------------------------
+* Calls sort function with a sortType and prints it out to cmdline
+* --------------------------------------------------------------------------------------------*/
+func printNums(colArr[10] colNum, arrSize int, sortType int) {
+colArr = sort(colArr, arrSize, sortType)
+for i := 0; i < arrSize; i++ {
+	if colArr[i].num != 0 {
+	fmt.Printf("%d %d\n", colArr[i].num, colArr[i].seqLength)
+	}
+}
+}

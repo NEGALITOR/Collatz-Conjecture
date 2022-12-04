@@ -1,13 +1,21 @@
-//use arrayvec::ArrayVec;
 use std::vec::Vec;
 use std::env;
 
+
+/* --------------------------------------------------------------------------------------------
+* Struct colNum that contains 2 elements: number and sequence length
+* --------------------------------------------------------------------------------------------*/
 #[derive(Copy, Clone)]
 struct ColNum {
     num : u64,
     seq_length : u64
 }
 
+/* --------------------------------------------------------------------------------------------
+* Main()
+* Takes command line arguments and pares it as an unsigned Int64
+* Fills up array and prints
+* --------------------------------------------------------------------------------------------*/
 fn main() {
     let mut _col_arr : Vec<ColNum> = Vec::with_capacity(10);
     let mut _col_arr_size = 0;
@@ -24,10 +32,6 @@ fn main() {
     for i in lower..upper {
         let mut _col_value = ColNum {num : i, seq_length: 0};
         _col_value.seq_length = collatz(_col_value.num, _col_value.seq_length);
-
-        //if _col_arr.len() == 0 {
-        //    _col_arr.push(_col_value);
-        //}
 
         if !replace_duplicate(&mut _col_arr, _col_value, _col_arr_size) {
             if _col_arr_size < 10 {
@@ -49,6 +53,12 @@ fn main() {
     print_arr(&mut _col_arr, _col_arr_size, 1);
 }
 
+/* --------------------------------------------------------------------------------------------
+* Calculates the amount of numbers required to reach 1 in a collatz sequence
+* Until num is 1, check if even or off and set num accordingly
+* Utilizes loop
+* Returns the count
+* --------------------------------------------------------------------------------------------*/
 fn collatz(mut num: u64, mut count: u64) -> u64 {
     while num != 1 {
         count+=1;
@@ -61,6 +71,10 @@ fn collatz(mut num: u64, mut count: u64) -> u64 {
     count
 }
 
+/* --------------------------------------------------------------------------------------------
+* Replaces any duplicates in the array according to if num is less than or equal to element
+* Returns true or false depending on if a duplicate was found
+* --------------------------------------------------------------------------------------------*/
 fn replace_duplicate(_col_arr: &mut Vec<ColNum>, _col_value: ColNum, _arr_size: usize) -> bool {
     for i in 0.._arr_size {
         if _col_arr[i].seq_length == _col_value.seq_length {
@@ -71,6 +85,10 @@ fn replace_duplicate(_col_arr: &mut Vec<ColNum>, _col_value: ColNum, _arr_size: 
     return false;
 }
 
+/* --------------------------------------------------------------------------------------------
+* Searches the minimum value through the array of colNum struct
+* Return the minimum values location
+* --------------------------------------------------------------------------------------------*/
 fn search_min(_col_arr: &mut Vec<ColNum>, _arr_size: usize) -> usize {
     let mut _min_st = _col_arr[0];
     let mut _min_seq_length = 0;
@@ -89,6 +107,11 @@ fn search_min(_col_arr: &mut Vec<ColNum>, _arr_size: usize) -> usize {
     _location
 }
 
+/* --------------------------------------------------------------------------------------------
+* Sorts the array with Insertion Sort
+* Based on the sortType passed through, it sorts according to num or seqLength
+* Returns the sorted array
+* --------------------------------------------------------------------------------------------*/
 fn sort_arr(_col_arr: &mut Vec<ColNum>, _arr_size: usize, _sort_type: i8) {
 
     if _sort_type == 0 {
@@ -127,6 +150,9 @@ fn sort_arr(_col_arr: &mut Vec<ColNum>, _arr_size: usize, _sort_type: i8) {
     }
 }
 
+/* --------------------------------------------------------------------------------------------
+* Calls sort function with a sortType and prints it out to cmdline
+* --------------------------------------------------------------------------------------------*/
 fn print_arr(_col_arr: &mut Vec<ColNum>, _arr_size: usize, _sort_type: i8) {
     sort_arr(_col_arr, _arr_size, _sort_type);
     for i in 0.._arr_size {

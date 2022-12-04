@@ -1,10 +1,17 @@
 #!/usr/bin/sbcl --script
 
+
+#| --------------------------------------------------------------------------------------------
+# Struct colNum that contains 2 elements: number and sequence length
+# --------------------------------------------------------------------------------------------|#
 (defstruct colNum
   num
   seqLength
 )
 
+#| --------------------------------------------------------------------------------------------
+# Calls sort function with a sortType and prints it out to cmdline
+# --------------------------------------------------------------------------------------------|#
 (defun printNums(colArr arrSize sortType)
 
     (numSort colArr arrSize sortType)
@@ -14,6 +21,11 @@
     )
 )
 
+#| --------------------------------------------------------------------------------------------
+# Sorts the array with Insertion Sort
+# Based on the sortType passed through, it sorts according to num or seqLength
+# Returns the sorted array
+# --------------------------------------------------------------------------------------------|#
 (defun numSort(colArr arrSize sortType)
 
     (if (= sortType 0)
@@ -49,11 +61,12 @@
             )
         )
     )
-
-    
-  
 )
 
+#| --------------------------------------------------------------------------------------------
+# Searches the minimum value through the array of colNum struct
+# Return the minimum values location
+# --------------------------------------------------------------------------------------------|#
 (defun searchMin(colArr arrSize)
 
   (let ((count 0) minNorm location minSt)
@@ -73,11 +86,13 @@
     )
     (return-from searchMin location)
   )
-
   
 )
 
-
+#| --------------------------------------------------------------------------------------------
+# Replaces any duplicates in the array according to if num is less than or equal to element
+# Returns true or false depending on if a duplicate was found
+# --------------------------------------------------------------------------------------------|#
 (defun replaceDuplicate(colArr colValue arrSize)
     (loop for i from 0 to (- arrSize 1) do
         (if (= (colNum-seqLength (aref colArr i)) (colNum-seqLength colValue))
@@ -90,6 +105,12 @@
     (return-from replaceDuplicate 0)
 )
 
+#| --------------------------------------------------------------------------------------------
+# Calculates the amount of numbers required to reach 1 in a collatz sequence
+# Until num is 1, check if even or off and return collatz accordingly
+# Utilizes recursion
+# Returns the count
+# --------------------------------------------------------------------------------------------|#
 (defun collatz(num count)
     (if (= num 1) (return-from collatz count))
     (setf count (+ count 1))
@@ -97,6 +118,11 @@
     (return-from collatz (collatz (+ (* num 3) 1) count))
 )
 
+#| --------------------------------------------------------------------------------------------
+# Main()
+# Takes command line arguments and pares it as an unsigned Int64
+# Fills up array and prints
+# --------------------------------------------------------------------------------------------|#
 (progn
     (defvar colArr (make-array '(10)))
     (defvar colArrSize 0)
